@@ -1,5 +1,7 @@
 package com.imertyildiz.grpcclient.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.imertyildiz.grpcproto.HelloWorldRequest;
@@ -10,6 +12,7 @@ import net.devh.boot.grpc.client.inject.GrpcClient;
 
 @Service
 public class ClientClient {
+    private static final Logger logger = LoggerFactory.getLogger(ClientClient.class);
 
     @GrpcClient("grpc-server")
     private HelloWorldServiceBlockingStub helloWorldServiceStub;
@@ -18,8 +21,7 @@ public class ClientClient {
         HelloWorldRequest helloWorldRequest = HelloWorldRequest.newBuilder().setClientName(sender)
                 .setRequestMessage(message).build();
         HelloWorldResponse helloWorldResponse = this.helloWorldServiceStub.helloWorld(helloWorldRequest);
-        System.out.println("Server sent a response: " + helloWorldResponse.getResponseMessage());
-
+        logger.info(String.format("Server sent a response: %1s", helloWorldResponse.getResponseMessage()));
     }
 
 }
